@@ -1,4 +1,4 @@
-﻿using FoodPickerApi.DTO;
+﻿
 using FoodPickerApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using System.Net;
 namespace FoodPickerApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/workers")]
     public class WorkerController : ControllerBase
     {
         private readonly foodpickerdbContext DBContext;
@@ -17,11 +17,11 @@ namespace FoodPickerApi.Controllers
             this.DBContext = DBContext;
         }
 
-        [HttpGet("GetWorkers")]
-        public async Task<ActionResult<List<WorkerDTO>>> Get()
+        [HttpGet("")]
+        public async Task<ActionResult<List<Worker>>> Get()
         {
             var List = await DBContext.Workers.Select(
-                s => new WorkerDTO
+                s => new Worker
                 {
                     Id = s.Id,
                     MiddleName = s.MiddleName,
@@ -43,10 +43,10 @@ namespace FoodPickerApi.Controllers
             }
         }
 
-        [HttpGet("GetWorkerById")]
-        public async Task<ActionResult<WorkerDTO>> GetWorkerById(int Id)
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<Worker>> GetWorkerById(int Id)
         {
-            WorkerDTO worker = await DBContext.Workers.Select(s => new WorkerDTO
+            Worker worker = await DBContext.Workers.Select(s => new Worker
             {
                 Id = s.Id,
                 MiddleName = s.MiddleName,
@@ -67,8 +67,8 @@ namespace FoodPickerApi.Controllers
         }
 
 
-        [HttpPost("InsertWorker")]
-        public async Task<HttpStatusCode> InsertWorker(WorkerDTO worker)
+        [HttpPost("")]
+        public async Task<HttpStatusCode> InsertWorker(Worker worker)
         {
             var entity = new Worker()
             {
@@ -85,8 +85,8 @@ namespace FoodPickerApi.Controllers
         }
 
 
-        [HttpPut("UpdateWorker")]
-        public async Task<HttpStatusCode> UpdateWorker(WorkerDTO worker)
+        [HttpPut("")]
+        public async Task<HttpStatusCode> UpdateWorker(Worker worker)
         {
             var entity = await DBContext.Workers.FirstOrDefaultAsync(s => s.Id == worker.Id);
             entity.MiddleName = worker.MiddleName;
@@ -99,7 +99,7 @@ namespace FoodPickerApi.Controllers
             return HttpStatusCode.OK;
         }
 
-        [HttpDelete("DeleteWorker/{Id}")]
+        [HttpDelete("")]
         public async Task<HttpStatusCode> DeleteWorker(int Id)
         {
             var entity = new Worker()

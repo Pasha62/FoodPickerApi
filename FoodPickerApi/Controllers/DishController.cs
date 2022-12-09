@@ -1,4 +1,4 @@
-﻿using FoodPickerApi.DTO;
+﻿
 using FoodPickerApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace FoodPickerApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/dishes")]
     public class DishController : ControllerBase
     {
 
@@ -19,11 +19,11 @@ namespace FoodPickerApi.Controllers
             this.DBContext = DBContext;
         }
 
-        [HttpGet("GetDishes")]
-        public async Task<ActionResult<List<DishDTO>>> Get()
+        [HttpGet("")]
+        public async Task<ActionResult<List<Dish>>> Get()
         {
             var List = await DBContext.Dishes.Select(
-                s => new DishDTO
+                s => new Dish
                 {
                     Id = s.Id,
                     Name = s.Name,
@@ -49,10 +49,10 @@ namespace FoodPickerApi.Controllers
             }
         }
 
-        [HttpGet("GetDishById")]
-        public async Task<ActionResult<DishDTO>> GetDishById(int Id)
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<Dish>> GetDishById(int Id)
         {
-            DishDTO dish = await DBContext.Dishes.Select(s => new DishDTO
+            Dish dish = await DBContext.Dishes.Select(s => new Dish
             {
                 Id = s.Id,
                 Name = s.Name,
@@ -77,8 +77,8 @@ namespace FoodPickerApi.Controllers
         }
 
 
-        [HttpPost("InsertDish")]
-        public async Task<HttpStatusCode> InsertDish(DishDTO dish)
+        [HttpPost("")]
+        public async Task<HttpStatusCode> InsertDish(Dish dish)
         {
             var entity = new Dish()
             {
@@ -99,8 +99,8 @@ namespace FoodPickerApi.Controllers
         }
 
 
-        [HttpPut("UpdateDish")]
-        public async Task<HttpStatusCode> UpdateDish(DishDTO dish)
+        [HttpPut("")]
+        public async Task<HttpStatusCode> UpdateDish(Dish dish)
         {
             var entity = await DBContext.Dishes.FirstOrDefaultAsync(s => s.Id == dish.Id);
             entity.Name = dish.Name;
@@ -117,7 +117,7 @@ namespace FoodPickerApi.Controllers
             return HttpStatusCode.OK;
         }
 
-        [HttpDelete("DeleteDish/{Id}")]
+        [HttpDelete("")]
         public async Task<HttpStatusCode> DeleteDish(int Id)
         {
             var entity = new Dish()

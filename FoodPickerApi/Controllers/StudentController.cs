@@ -1,13 +1,14 @@
-﻿using FoodPickerApi.DTO;
+﻿
 using FoodPickerApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FoodPickerApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/students")]
     public class StudentController : ControllerBase
     {
         private readonly foodpickerdbContext DBContext;
@@ -17,11 +18,11 @@ namespace FoodPickerApi.Controllers
             this.DBContext = DBContext;
         }
 
-        [HttpGet("GetStudents")]
-        public async Task<ActionResult<List<StudentDTO>>> Get()
+        [HttpGet("")]
+        public async Task<ActionResult<List<Student>>> Get()
         {
             var List = await DBContext.Students.Select(
-                s => new StudentDTO
+                s => new Student
                 {
                     Id = s.Id,
                     MiddleName = s.MiddleName,
@@ -41,10 +42,10 @@ namespace FoodPickerApi.Controllers
             }
         }
 
-        [HttpGet("GetStudentById")]
-        public async Task<ActionResult<StudentDTO>> GetStudentById(int Id)
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<Student>> GetStudentById(int Id)
         {
-            StudentDTO student = await DBContext.Students.Select(s => new StudentDTO
+            Student student = await DBContext.Students.Select(s => new Student
             {
                 Id = s.Id,
                 MiddleName = s.MiddleName,
@@ -63,24 +64,31 @@ namespace FoodPickerApi.Controllers
         }
 
 
-        [HttpPost("InsertStudent")]
-        public async Task<HttpStatusCode> InsertStudent(StudentDTO student)
+        [HttpPost("")]
+        public async Task<HttpStatusCode> InsertStudent(Student student)
         {
             var entity = new Student()
             {
                 MiddleName = student.MiddleName,
                 Name = student.Name,
                 Surname = student.Surname,
-                GradeId = student.GradeId
+                GradeId = DBContext.Grades.FirstOrDefaultAsync(g => g.Id == student.GradeId) != null ? student.GradeId : null
             };
-            DBContext.Students.Add(entity);
-            await DBContext.SaveChangesAsync();
-            return HttpStatusCode.Created;
+            if(entity.GradeId != null)
+            {
+                DBContext.Students.Add(entity);
+                await DBContext.SaveChangesAsync();
+                return HttpStatusCode.Created;
+            }
+            else
+            {
+                return HttpStatusCode.NotFound;
+            }
         }
 
 
-        [HttpPut("UpdateStudent")]
-        public async Task<HttpStatusCode> UpdateStudent(StudentDTO student)
+        [HttpPut("")]
+        public async Task<HttpStatusCode> UpdateStudent(Student student)
         {
             var entity = await DBContext.Students.FirstOrDefaultAsync(s => s.Id == student.Id);
             entity.MiddleName = student.MiddleName;
@@ -91,7 +99,7 @@ namespace FoodPickerApi.Controllers
             return HttpStatusCode.OK;
         }
 
-        [HttpDelete("DeleteStudent/{Id}")]
+        [HttpDelete("")]
         public async Task<HttpStatusCode> DeleteStudent(int Id)
         {
             var entity = new Student()

@@ -1,4 +1,4 @@
-﻿using FoodPickerApi.DTO;
+﻿
 using FoodPickerApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +18,10 @@ namespace FoodPickerApi.Controllers
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<List<ParentDTO>>> Get()
+        public async Task<ActionResult<List<Parent>>> Get()
         {
             var List = await DBContext.Parents.Select(
-                s => new ParentDTO
+                s => new Parent
                 {
                     Id = s.Id,
                     MiddleName = s.MiddleName,
@@ -43,9 +43,9 @@ namespace FoodPickerApi.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<ParentDTO>> GetParentById(int Id)
+        public async Task<ActionResult<Parent>> GetParentById(int Id)
         {
-            ParentDTO parent = await DBContext.Parents.Select(s => new ParentDTO
+            Parent parent = await DBContext.Parents.Select(s => new Parent
             {
                 Id = s.Id,
                 MiddleName = s.MiddleName,
@@ -66,7 +66,7 @@ namespace FoodPickerApi.Controllers
 
 
         [HttpPost("")]
-        public async Task<HttpStatusCode> InsertParent(ParentDTO parent)
+        public async Task<HttpStatusCode> InsertParent(Parent parent)
         {
             var entity = new Parent()
             {
@@ -83,7 +83,7 @@ namespace FoodPickerApi.Controllers
 
 
         [HttpPut("")]
-        public async Task<HttpStatusCode> UpdateParent(ParentDTO parent)
+        public async Task<HttpStatusCode> UpdateParent(Parent parent)
         {
             var entity = await DBContext.Parents.FirstOrDefaultAsync(s => s.Id == parent.Id);
             entity.MiddleName = parent.MiddleName;
