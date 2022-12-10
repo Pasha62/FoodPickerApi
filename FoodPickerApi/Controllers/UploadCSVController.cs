@@ -27,7 +27,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
@@ -59,7 +59,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
@@ -90,7 +90,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
@@ -121,7 +121,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
@@ -154,7 +154,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
@@ -190,7 +190,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
@@ -219,7 +219,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
@@ -249,7 +249,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
@@ -279,7 +279,7 @@ namespace FoodPickerApi.Controllers
             try
             {
                 DataTable table = new DataTable();
-                using (var csvReader = new CsvReader(new StreamReader(path, Encoding.GetEncoding(1251)), true))
+                using (var csvReader = new CsvReader(new StreamReader(path), true))
                 {
                     table.Load(csvReader);
                 };
