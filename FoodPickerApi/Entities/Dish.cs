@@ -15,6 +15,15 @@ namespace FoodPickerApi.Entities
         public int WeightGrams { get; set; }
         public string Ingredients { get; set; } = null!;
         public int Calories { get; set; }
-        public string Type { get; set; } = null!;
+        public DishType Type;
+
+        public enum DishType
+        {
+            PRIMARY,
+            SIDE,
+            SECONDARY,
+            DRINK,
+            EXTRA,
+        }
     }
 }

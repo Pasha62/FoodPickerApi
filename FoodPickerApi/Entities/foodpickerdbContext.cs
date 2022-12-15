@@ -92,6 +92,8 @@ namespace FoodPickerApi.Entities
                 entity.Property(e => e.Number).HasColumnName("number");
 
                 entity.Property(e => e.TeacherId).HasColumnName("teacherId");
+
+                entity.Property(e => e.breakIndex).HasColumnName("breakIndex");
             });
 
             modelBuilder.Entity<Order>(entity =>

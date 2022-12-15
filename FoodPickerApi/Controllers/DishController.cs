@@ -90,9 +90,13 @@ namespace FoodPickerApi.Controllers
                 Fats = dish.Fats,
                 WeightGrams = dish.WeightGrams,
                 Ingredients = dish.Ingredients,
-                Calories = dish.Calories,
-                Type = dish.Type
+                Calories = dish.Calories
             };
+            if (dish.Type == Dish.DishType.PRIMARY) entity.Type = Dish.DishType.PRIMARY;
+            if (dish.Type == Dish.DishType.SIDE) entity.Type = Dish.DishType.SIDE;
+            if (dish.Type == Dish.DishType.SECONDARY) entity.Type = Dish.DishType.SECONDARY;
+            if (dish.Type == Dish.DishType.DRINK) entity.Type = Dish.DishType.DRINK;
+            if (dish.Type == Dish.DishType.EXTRA) entity.Type = Dish.DishType.EXTRA;
             DBContext.Dishes.Add(entity);
             await DBContext.SaveChangesAsync();
             return HttpStatusCode.Created;

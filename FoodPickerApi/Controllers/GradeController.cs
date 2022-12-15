@@ -26,7 +26,8 @@ namespace FoodPickerApi.Controllers
                     Id = s.Id,
                     Letter = s.Letter,
                     Number = s.Number,
-                    TeacherId = s.TeacherId
+                    TeacherId = s.TeacherId,
+                    breakIndex = s.breakIndex
                 }
             ).ToListAsync();
 
@@ -48,7 +49,8 @@ namespace FoodPickerApi.Controllers
                 Id = s.Id,
                 Letter = s.Letter,
                 Number = s.Number,
-                TeacherId = s.TeacherId
+                TeacherId = s.TeacherId,
+                breakIndex = s.breakIndex
             }).FirstOrDefaultAsync(s => s.Id == Id);
             if (grade == null)
             {
@@ -68,7 +70,8 @@ namespace FoodPickerApi.Controllers
             {
                 Letter = grade.Letter,
                 Number = grade.Number,
-                TeacherId = DBContext.Teachers.FirstOrDefaultAsync(g => g.Id == grade.TeacherId) != null ? grade.TeacherId : null
+                TeacherId = DBContext.Teachers.FirstOrDefaultAsync(g => g.Id == grade.TeacherId) != null ? grade.TeacherId : null,
+                breakIndex = grade.breakIndex
             };
             DBContext.Grades.Add(entity);
             await DBContext.SaveChangesAsync();
@@ -82,6 +85,7 @@ namespace FoodPickerApi.Controllers
             var entity = await DBContext.Grades.FirstOrDefaultAsync(s => s.Id == grade.Id);
             entity.Letter = grade.Letter;
             entity.Number = grade.Number;
+            entity.breakIndex = grade.breakIndex;
             entity.TeacherId = DBContext.Teachers.FirstOrDefaultAsync(g => g.Id == grade.TeacherId) != null ? grade.TeacherId : null;
             await DBContext.SaveChangesAsync();
             return HttpStatusCode.OK;

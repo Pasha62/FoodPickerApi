@@ -9,5 +9,7 @@ namespace FoodPickerApi.Entities
         public string Letter { get; set; } = null!;
         public int Number { get; set; }
         public int? TeacherId { get; set; }
+
+        public int breakIndex { get; set; } = 0!;
     }
 }
