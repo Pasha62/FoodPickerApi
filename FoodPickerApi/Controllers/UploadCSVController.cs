@@ -17,9 +17,11 @@ namespace FoodPickerApi.Controllers
     public class UploadCSVController : ControllerBase
     {
         private readonly foodpickerdbContext DBContext;
+        
         public UploadCSVController(foodpickerdbContext DBContext) {
             this.DBContext = DBContext;
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
         }
 
 
@@ -77,28 +79,32 @@ namespace FoodPickerApi.Controllers
                     };
                     DBContext.Teachers.Add(teacher);
                     await DBContext.SaveChangesAsync();
-                    Teacher teach = await DBContext.Teachers.Select(s => new Teacher() {
-                        Username = s.Username
-                        }).FirstOrDefaultAsync(s => s.Username == teacher.Username);
-                    if (teach != null)
+                    if (teacher != null)
                     {
                         List<char> letters = table.Rows[i][5].ToString().ToList();
+                        int number = Convert.ToInt32(String.Join("", letters.SkipLast(1).ToArray()));
+                        string letter = letters.Last().ToString();
 
                         Grade findgrade = await DBContext.Grades.Select(s => new Grade()
                         {
+                            Id = s.Id,
                             Letter = s.Letter,
                             Number = s.Number,
                             TeacherId = s.TeacherId,
                             breakIndex = s.breakIndex
-                        }).Where(s => s.Number == Convert.ToInt32(letters.SkipLast(1).ToString()) && s.Letter == letters.Last().ToString()).FirstOrDefaultAsync();
+                        }).Where(s => s.Number == number  && s.Letter == letter ).FirstOrDefaultAsync();
 
-                        if(findgrade == null)
+                        if(findgrade != null)
+                        {  
+
+                        }
+                        else
                         {
                             Grade grade = new Grade()
                             {
-                                Letter = letters.Last().ToString(),
-                                Number = Convert.ToInt32(letters.SkipLast(1).ToString()),
-                                TeacherId = teach.Id,
+                                Letter = letter,
+                                Number = number,
+                                TeacherId = teacher.Id,
                                 breakIndex = 0
                             };
                             DBContext.Grades.Add(grade);
@@ -133,14 +139,17 @@ namespace FoodPickerApi.Controllers
                         MiddleName = table.Rows[i][2] != null ? (string)table.Rows[i][0] : "-1",
                     };
                     List<char> letters = table.Rows[i][3].ToString().ToList();
+                    int number = Convert.ToInt32(String.Join("", letters.SkipLast(1).ToArray()));
+                    string letter = letters.Last().ToString();
 
                     Grade findgrade = await DBContext.Grades.Select(s => new Grade()
                     {
+                        Id = s.Id,
                         Letter = s.Letter,
                         Number = s.Number,
                         TeacherId = s.TeacherId,
                         breakIndex = s.breakIndex
-                    }).Where(s => s.Number == Convert.ToInt32(letters.SkipLast(1).ToString()) && s.Letter == letters.Last().ToString()).FirstOrDefaultAsync();
+                    }).Where(s => s.Number == number && s.Letter == letter).FirstOrDefaultAsync();
 
                     if (findgrade != null)
                     {
@@ -150,7 +159,8 @@ namespace FoodPickerApi.Controllers
                     }
                     Parent parent = await DBContext.Parents.Select(s => new Parent()
                     {
-                        Id = s.Id
+                        Id = s.Id,
+                        Username = s.Username
                     }).Where(s => s.Username == table.Rows[i][4].ToString()).FirstOrDefaultAsync();
                     if (parent != null)
                     {
@@ -159,7 +169,10 @@ namespace FoodPickerApi.Controllers
                             ParentId = s.ParentId,
                             StudentId = s.StudentId
                         }).Where(s => s.ParentId == parent.Id && s.StudentId == student.Id).FirstOrDefaultAsync();
-                        if( parentStudent == null)
+                        if( parentStudent != null)
+                        {
+                        }
+                        else
                         {
                             ParentStudent parentStudent1 = new ParentStudent()
                             {
@@ -168,7 +181,6 @@ namespace FoodPickerApi.Controllers
                             };
                             DBContext.ParentStudents.Add(parentStudent1);
                             await DBContext.SaveChangesAsync();
-
                         }
                     }
 

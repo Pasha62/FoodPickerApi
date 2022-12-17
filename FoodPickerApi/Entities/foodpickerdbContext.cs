@@ -15,7 +15,9 @@ namespace FoodPickerApi.Entities
         public foodpickerdbContext(DbContextOptions<foodpickerdbContext> options)
             : base(options)
         {
+           
         }
+
 
         public virtual DbSet<Dish> Dishes { get; set; } = null!;
         public virtual DbSet<Grade> Grades { get; set; } = null!;
@@ -29,6 +31,7 @@ namespace FoodPickerApi.Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
